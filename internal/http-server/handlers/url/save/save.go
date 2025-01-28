@@ -26,7 +26,7 @@ type Response struct {
 
 const urlLilLength = 5
 
-//go:generate go run github.com/vektra/mockery/v2@v2.28.2 --name=URLSaver
+//go:generate go run github.com/vektra/mockery/v2@v2.51.1 --name=UrlSaver
 type UrlSaver interface {
 	SaveUrl(urlToSave, lil string) (int64, error)
 }
@@ -47,7 +47,6 @@ func New(log *slog.Logger, urlSaver UrlSaver) http.HandlerFunc {
 			log.Error("failed to decode request body", sl.Err(err))
 
 			render.JSON(w, r, resp.Error("failed to decode request"))
-
 			return
 		}
 
@@ -60,7 +59,6 @@ func New(log *slog.Logger, urlSaver UrlSaver) http.HandlerFunc {
 			log.Error("invalid request", sl.Err(err))
 
 			render.JSON(w, r, resp.ValidationErrors(validatorErrs))
-
 			return
 		}
 
@@ -75,14 +73,12 @@ func New(log *slog.Logger, urlSaver UrlSaver) http.HandlerFunc {
 			log.Info("url already exists", slog.String("url", req.Url))
 
 			render.JSON(w, r, resp.Error("url already exists"))
-
 			return
 		}
 		if err != nil {
 			log.Info("failed to add url", sl.Err(err))
 
 			render.JSON(w, r, resp.Error("failed to add url"))
-
 			return
 		}
 
