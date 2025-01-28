@@ -97,14 +97,13 @@ func (s *Storage) DeleteUrl(lil string) error {
 		return fmt.Errorf("%s : %w", fn, err)
 	}
 
-	res, err := stmt.Exec(lil)
+	_, err = stmt.Exec(lil)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return storage.ErrLilNotFound
 		}
 		return fmt.Errorf("%s : %w", fn, err)
 	}
-	_ = res
 
 	return nil
 }

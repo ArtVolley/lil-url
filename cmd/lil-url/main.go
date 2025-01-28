@@ -2,6 +2,7 @@ package main
 
 import (
 	"lil-url/internal/config"
+	"lil-url/internal/http-server/handlers/url/delete"
 	"lil-url/internal/http-server/handlers/url/redirect"
 	"lil-url/internal/http-server/handlers/url/save"
 	mwLogger "lil-url/internal/http-server/middleware/logger"
@@ -42,6 +43,7 @@ func main() {
 
 	router.Post("/url", save.New(log, storage))
 	router.Get("/{lilUrl}", redirect.New(log, storage))
+	router.Delete("/{lilUrl}", delete.New(log, storage))
 
 	log.Info("starting server", slog.String("address", cfg.HTTPServer.Address))
 	srv := &http.Server{
